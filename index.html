@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en-GB" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMIBMI — UK Adult BMI Calculator & Healthy Weight Guide</title>
+    <meta name="description" content="Calculate your Body Mass Index (BMI) in stones, pounds, feet, inches, kilograms, or centimetres. Includes UK NHS adult BMI ranges, explanations, and practical wellbeing guidance.">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                    },
+                    colors: {
+                        pageBg: '#f6f8f5',
+                        darkForest: '#1c3526',
+                        btnGreen: '#3b644d',
+                        btnGreenHover: '#2d4e3c',
+                        mutedSage: '#6b7c71',
+                        resultBg: '#e4ebe5',
+                        guideBg: '#f5efe8',
+                        guideBorder: '#cc9d70',
+                        scaleBlue: '#7ba7d7',
+                        scaleGreen: '#82b687',
+                        scaleYellow: '#e1bd64',
+                        scaleOrange: '#d78459',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-pageBg text-darkForest font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Top Navigation Bar (Mobile-Safe Responsive Header) -->
+    <nav class="w-full bg-white border-b border-[#e6ece7] sticky top-0 z-30">
+        <div class="max-w-[1160px] mx-auto px-4 sm:px-8">
+            <!-- Primary Top Bar -->
+            <div class="h-[64px] sm:h-[72px] flex items-center justify-between gap-3">
+                <!-- Brand Logo (Protected from shrinking or wrapping) -->
+                <a href="#" class="inline-flex items-center gap-2.5 shrink-0 group focus:outline-none">
+                    <span class="w-8 h-8 rounded-[9px] bg-btnGreen flex items-center justify-center text-white font-extrabold text-[17px] tracking-tighter shadow-sm group-hover:bg-btnGreenHover transition-colors">
+                        w
+                    </span>
+                    <span class="text-[17px] sm:text-[18px] font-extrabold text-darkForest tracking-tight whitespace-nowrap">
+                        BMIBMI
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation Links + Primary CTA -->
+                <div class="flex items-center gap-4 sm:gap-7">
+                    <div class="hidden md:flex items-center gap-7">
+                        <a href="#guide" class="text-[14px] font-medium text-mutedSage hover:text-darkForest transition-colors">
+                            UK Guide
+                        </a>
+                        <a href="#how-it-works" class="text-[14px] font-medium text-mutedSage hover:text-darkForest transition-colors">
+                            How BMI Works
+                        </a>
+                        <a href="#faq" class="text-[14px] font-medium text-mutedSage hover:text-darkForest transition-colors">
+                            FAQs
+                        </a>
+                        <a href="#about-us" class="text-[14px] font-medium text-mutedSage hover:text-darkForest transition-colors">
+                            About
+                        </a>
+                    </div>
+
+                    <a 
+                        href="#calculator" 
+                        class="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-btnGreen hover:bg-btnGreenHover active:scale-[0.99] text-white text-[12.5px] sm:text-[13.5px] font-semibold transition-all shadow-sm whitespace-nowrap shrink-0"
+                    >
+                        <span>Calculate BMI</span>
+                        <span aria-hidden="true" class="text-[12px] leading-none">&#8599;</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Clean Mobile Sub-Navigation Strip (Visible only on phones/small tablets so header never fouls) -->
+            <div class="flex md:hidden items-center justify-between border-t border-[#eef2ef] py-2 text-[12.5px] font-medium text-mutedSage overflow-x-auto gap-4">
+                <a href="#guide" class="hover:text-darkForest whitespace-nowrap py-0.5">UK Guide</a>
+                <a href="#how-it-works" class="hover:text-darkForest whitespace-nowrap py-0.5">How BMI Works</a>
+                <a href="#faq" class="hover:text-darkForest whitespace-nowrap py-0.5">FAQs</a>
+                <a href="#about-us" class="hover:text-darkForest whitespace-nowrap py-0.5">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Page Wrapper -->
+    <div id="calculator" class="flex-1 flex flex-col items-center justify-center py-8 sm:py-10 px-4 sm:px-6 lg:px-8">
+
+        <!-- Header Section -->
+        <header class="text-center max-w-xl mx-auto mb-7 sm:mb-8">
+            <div class="inline-flex items-center justify-center gap-2.5 mb-2">
+                <span class="w-5 h-[1.5px] bg-[#d4a57c] inline-block rounded-full"></span>
+                <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-[#4b6b57]">Your Personal Snapshot</span>
+            </div>
+            <h1 class="text-2xl sm:text-[34px] font-extrabold text-darkForest tracking-tight leading-tight mb-2">
+                Let’s find your number
+            </h1>
+            <p class="text-sm text-mutedSage font-normal">
+                Enter your height and weight in UK imperial or metric units for an instant NHS-aligned BMI calculation.
+            </p>
+        </header>
+
+        <!-- Main Calculator Card -->
+        <main class="w-full max-w-[960px] bg-white rounded-[24px] shadow-[0_8px_30px_rgb(28,53,38,0.04)] border border-[#e6ece7] p-5 sm:p-8">
+            
+            <!-- Input Sections Grid (Imperial & Metric side-by-side) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+                
+                <!-- Imperial Card -->
+                <section class="rounded-[18px] border border-[#e3e8e4] p-5 sm:p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-baseline gap-2.5 mb-5">
+                            <h2 class="text-[16px] font-bold text-darkForest">Imperial</h2>
+                            <span class="text-xs font-medium text-mutedSage">st &middot; lb &middot; ft / in</span>
+                        </div>
+
+                        <!-- Imperial Weight -->
+                        <div class="mb-4">
+                            <label class="block text-xs font-bold text-darkForest mb-2">Weight</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="relative flex items-center">
+                                    <input 
+                                        type="number" 
+                                        id="imp-st" 
+                                        placeholder="e.g. 11"
+                                        min="0" 
+                                        step="1"
+                                        aria-label="Weight in stones"
+                                        class="w-full rounded-[12px] border border-[#d6ddd8] bg-white py-2.5 pl-3.5 pr-9 text-sm font-medium text-darkForest focus:border-btnGreen focus:outline-none focus:ring-2 focus:ring-btnGreen/15 transition-all"
+                                    >
+                                    <span class="absolute right-3.5 text-xs font-medium text-mutedSage pointer-events-none select-none">st</span>
+                                </div>
+                                <div class="relative flex items-center">
+                                    <input 
+                                        type="number" 
+                                        id="imp-lb" 
+                                        placeholder="e.g. 6"
+                                        min="0" 
+                                        max="13.9"
+                                        step="any"
+                                        aria-label="Weight in pounds"
+                                        class="w-full rounded-[12px] border border-[#d6ddd8] bg-white py-2.5 pl-3.5 pr-9 text-sm font-medium text-darkForest focus:border-btnGreen focus:outline-none focus:ring-2 focus:ring-btnGreen/15 transition-all"
+                                    >
+                                    <span class="absolute right-3.5 text-xs font-medium text-mutedSage pointer-events-none select-none">lb</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Imperial Height -->
+                        <div class="mb-6">
+                            <label class="block text-xs font-bold text-darkForest mb-2">Height</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="relative flex items-center">
+                                    <input 
+                                        type="number" 
+                                        id="imp-ft" 
+                                        placeholder="e.g. 5"
+                                        min="0" 
+                                        step="1"
+                                        aria-label="Height in feet"
+                                        class="w-full rounded-[12px] border border-[#d6ddd8] bg-white py-2.5 pl-3.5 pr-9 text-sm font-medium text-darkForest focus:border-btnGreen focus:outline-none focus:ring-2 focus:ring-btnGreen/15 transition-all"
+                                    >
+                                    <span class="absolute right-3.5 text-xs font-medium text-mutedSage pointer-events-none select-none">ft</span>
+                                </div>
+                                <div class="relative flex items-center">
+                                    <input 
+                                        type="number" 
+                                        id="imp-in" 
+                                        placeholder="e.g. 9"
+                                        min="0" 
+                                        max="11.9"
+                                        step="any"
+                                        aria-label="Height in inches"
+                                        class="w-full rounded-[12px] border border-[#d6ddd8] bg-white py-2.5 pl-3.5 pr-9 text-sm font-medium text-darkForest focus:border-btnGreen focus:outline-none focus:ring-2 focus:ring-btnGreen/15 transition-all"
+                                    >
+                                    <span class="absolute right-3.5 text-xs font-medium text-mutedSage pointer-events-none select-none">in</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button 
+                            type="button" 
+                            id="btn-calc-imperial"
+                            class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-full bg-btnGreen hover:bg-btnGreenHover active:scale-[0.99] text-white text-[13px] font-semibold tracking-wide transition-all shadow-sm cursor-pointer"
+                        >
+                            Calculate with imperial
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Metric Card -->
+                <section class="rounded-[18px] border border-[#e3e8e4] p-5 sm:p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-baseline gap-2.5 mb-5">
+                            <h2 class="text-[16px] font-bold text-darkForest">Metric</h2>
+                            <span class="text-xs font-medium text-mutedSage">kg &middot; cm</span>
+                        </div>
+
+                        <!-- Metric Weight -->
+                        <div class="mb-4">
+                            <label for="met-kg" class="block text-xs font-bold text-darkForest mb-2">Weight</label>
+                            <div class="relative flex items-center">
+                                <input 
+                                    type="number" 
+                                    id="met-kg" 
+                                    placeholder="e.g. 72.5"
+                                    min="0" 
+                                    step="any"
+                                    aria-label="Weight in kilograms"
+                                    class="w-full rounded-[12px] border border-[#d6ddd8] bg-white py-2.5 pl-3.5 pr-10 text-sm font-medium text-darkForest focus:border-btnGreen focus:outline-none focus:ring-2 focus:ring-btnGreen/15 transition-all"
+                                >
+                                <span class="absolute right-3.5 text-xs font-medium text-mutedSage pointer-events-none select-none">kg</span>
+                            </div>
+                        </div>
+
+                        <!-- Metric Height -->
+                        <div class="mb-6">
+                            <label for="met-cm" class="block text-xs font-bold text-darkForest mb-2">Height</label>
+                            <div class="relative flex items-center">
+                                <input 
+                                    type="number" 
+                                    id="met-cm" 
+                                    placeholder="e.g. 175"
+                                    min="0" 
+                                    step="any"
+                                    aria-label="Height in centimeters"
+                                    class="w-full rounded-[12px] border border-[#d6ddd8] bg-white py-2.5 pl-3.5 pr-10 text-sm font-medium text-darkForest focus:border-btnGreen focus:outline-none focus:ring-2 focus:ring-btnGreen/15 transition-all"
+                                >
+                                <span class="absolute right-3.5 text-xs font-medium text-mutedSage pointer-events-none select-none">cm</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button 
+                            type="button" 
+                            id="btn-calc-metric"
+                            class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-full bg-btnGreen hover:bg-btnGreenHover active:scale-[0.99] text-white text-[13px] font-semibold tracking-wide transition-all shadow-sm cursor-pointer"
+                        >
+                            Calculate with metric
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Inline Validation Notice (Hidden by default) -->
+            <div id="validation-banner" class="hidden mt-4 rounded-xl bg-amber-50 border border-amber-200 px-4 py-2.5 text-xs font-medium text-amber-900 flex items-center justify-between">
+                <span id="validation-text">Please enter valid height and weight values greater than zero.</span>
+                <button type="button" id="close-validation" class="text-amber-700 hover:text-amber-950 font-bold ml-4">&times;</button>
+            </div>
+
+            <!-- Action & Disclaimer Row -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-5 mb-5">
+                <p class="text-[12px] leading-relaxed text-mutedSage max-w-md">
+                    For adults aged 18 and over. BMI is a screening measure and does not account for every aspect of health.
+                </p>
+
+                <div class="shrink-0">
+                    <button 
+                        type="button" 
+                        id="btn-clear"
+                        class="inline-flex items-center justify-center px-5 py-2.5 rounded-full border border-[#d6ddd8] bg-white hover:bg-[#f4f7f5] active:scale-[0.99] text-darkForest text-[13px] font-semibold transition-all cursor-pointer"
+                    >
+                        Clear all fields
+                    </button>
+                </div>
+            </div>
+
+            <!-- Full-Width 50% / 50% Results & UK Guide Split Cards -->
+            <div id="guide" class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 scroll-mt-24">
+                
+                <!-- Left 50%: Your BMI Result Card -->
+                <div class="w-full rounded-[18px] bg-resultBg p-5 sm:p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between gap-2">
+                            <div>
+                                <span class="block text-xs font-medium text-mutedSage mb-0.5">Your BMI</span>
+                                <div id="bmi-value" class="text-[32px] font-extrabold text-darkForest leading-none tracking-tight">
+                                    —
+                                </div>
+                            </div>
+                            <span id="bmi-badge" class="inline-flex items-center px-3 py-1 rounded-full bg-white text-darkForest text-xs font-bold shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+                                Enter details
+                            </span>
+                        </div>
+
+                        <p id="bmi-description" class="text-[12.5px] leading-snug text-mutedSage mt-3.5">
+                            Enter your height and weight above to see your BMI result.
+                        </p>
+                    </div>
+
+                    <!-- Visual Scale Bar -->
+                    <div class="mt-5">
+                        <div class="grid grid-cols-4 text-[10px] font-medium text-mutedSage mb-1.5">
+                            <span class="text-left">Below 18.5</span>
+                            <span class="text-center">18.5–24.9</span>
+                            <span class="text-center">25–29.9</span>
+                            <span class="text-right">30+</span>
+                        </div>
+
+                        <!-- Segmented Track + Marker -->
+                        <div class="relative h-2.5 w-full flex items-center">
+                            <div class="w-full h-2 rounded-full overflow-hidden grid grid-cols-4">
+                                <div class="bg-scaleBlue h-full"></div>
+                                <div class="bg-scaleGreen h-full"></div>
+                                <div class="bg-scaleYellow h-full"></div>
+                                <div class="bg-scaleOrange h-full"></div>
+                            </div>
+                            <!-- Dynamic Position Dot -->
+                            <div 
+                                id="bmi-marker" 
+                                class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-darkForest border-2 border-white shadow-sm transition-all duration-300 ease-out"
+                                style="left: 50%;"
+                                aria-hidden="true"
+                            ></div>
+                        </div>
+
+                        <p id="bmi-scale-caption" class="text-[11.5px] font-bold text-darkForest leading-snug mt-3">
+                            Your BMI position will appear on this scale once calculated.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right 50%: UK Adult BMI Guide Card -->
+                <div class="w-full rounded-[18px] bg-guideBg border-l-[3px] border-guideBorder p-5 sm:p-6 flex flex-col justify-between">
+                    <p class="text-[12.5px] leading-[1.65] text-[#4c5b52]">
+                        <strong class="font-bold text-darkForest">UK adult BMI guide:</strong> below 18.5 is underweight; 18.5–24.9 is a healthy weight; 25–29.9 is overweight; 30 or above is obesity. NHS guidance uses lower thresholds for some ethnic backgrounds: 23–27.4 overweight and 27.5 or above obesity. BMI is a guide, not a diagnosis.
+                        <a 
+                            href="https://www.nhs.uk/live-well/healthy-weight/bmi-calculator/" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            class="underline decoration-[#6b7c71] hover:text-darkForest font-medium transition-colors"
+                        >NHS source</a>.
+                    </p>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Comprehensive Editorial Guides & Explanations (Supports User Value & AdSense Content Quality) -->
+        <div class="w-full max-w-[960px] mt-8 space-y-6">
+            
+            <!-- Section 1: Understanding BMI & How It Is Calculated -->
+            <article id="how-it-works" class="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(28,53,38,0.04)] border border-[#e6ece7] p-6 sm:p-8 scroll-mt-24">
+                <div class="inline-flex items-center gap-2 mb-2">
+                    <span class="w-4 h-[1.5px] bg-[#d4a57c] inline-block rounded-full"></span>
+                    <span class="text-[11px] font-bold tracking-[0.12em] uppercase text-[#4b6b57]">Understanding Your Result</span>
+                </div>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-darkForest tracking-tight">
+                    What is Body Mass Index (BMI) and how is it calculated?
+                </h2>
+                <p class="text-base sm:text-lg font-bold text-[#4b6b57] mt-0.5 mb-4">
+                    One number — many ways to be well
+                </p>
+                <div class="space-y-3.5 text-sm leading-relaxed text-mutedSage">
+                    <p>
+                        Body Mass Index (BMI) is a widely used, practical screening tool used by UK healthcare providers, including the NHS, to check whether an adult’s weight is broadly proportionate to their height. Rather than measuring body fat directly, BMI estimates weight relative to stature using a standardised mathematical ratio.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
+                        <div class="rounded-[16px] bg-pageBg border border-[#e6ece7] p-4">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-darkForest mb-1.5">Metric Formula</h3>
+                            <p class="text-xs text-mutedSage leading-relaxed">
+                                Divide your weight in kilograms ($\text{kg}$) by your height in metres ($\text{m}$) squared:
+                            </p>
+                            <p class="mt-2 text-xs font-bold text-darkForest bg-white rounded-lg px-3 py-2 border border-[#e3e8e4]">
+                                $\text{BMI} = \text{weight (kg)} \div [\text{height (m)}]^2$
+                            </p>
+                        </div>
+                        <div class="rounded-[16px] bg-pageBg border border-[#e6ece7] p-4">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-darkForest mb-1.5">Imperial Formula</h3>
+                            <p class="text-xs text-mutedSage leading-relaxed">
+                                Convert stones to pounds ($1\text{ st} = 14\text{ lb}$) and feet to inches ($1\text{ ft} = 12\text{ in}$):
+                            </p>
+                            <p class="mt-2 text-xs font-bold text-darkForest bg-white rounded-lg px-3 py-2 border border-[#e3e8e4]">
+                                $\text{BMI} = [\text{weight (lb)} \div \text{height (in)}^2] \times 703$
+                            </p>
+                        </div>
+                    </div>
+                    <p>
+                        Because muscle tissue is denser than fat tissue, people with a naturally muscular build—such as weightlifters, rugby players, or manual labourers—may record a BMI in the overweight range despite having low body fat. Equally, older adults who have lost muscle mass over time may record a healthy BMI while carrying higher internal fat levels.
+                    </p>
+                </div>
+            </article>
+
+            <!-- Section 2: UK BMI Categories & Ethnic Thresholds Table -->
+            <section class="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(28,53,38,0.04)] border border-[#e6ece7] p-6 sm:p-8">
+                <div class="inline-flex items-center gap-2 mb-2">
+                    <span class="w-4 h-[1.5px] bg-[#d4a57c] inline-block rounded-full"></span>
+                    <span class="text-[11px] font-bold tracking-[0.12em] uppercase text-[#4b6b57]">NHS Reference Ranges</span>
+                </div>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-darkForest tracking-tight mb-2">
+                    How to interpret adult BMI categories in the UK
+                </h2>
+                <p class="text-sm leading-relaxed text-mutedSage mb-5">
+                    In the United Kingdom, adult BMI classifications are grouped into four main bands. Evidence from the National Institute for Health and Care Excellence (NICE) shows that adults from South Asian, Chinese, other Asian, Middle Eastern, Black African, or African-Caribbean family backgrounds face an increased risk of conditions such as type 2 diabetes at lower BMI thresholds.
+                </p>
+
+                <!-- Responsive Guide Table -->
+                <div class="overflow-x-auto rounded-[16px] border border-[#e6ece7]">
+                    <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                        <thead>
+                            <tr class="bg-pageBg text-darkForest border-b border-[#e6ece7]">
+                                <th class="py-3 px-4 font-bold">Category</th>
+                                <th class="py-3 px-4 font-bold">Standard Adult Range</th>
+                                <th class="py-3 px-4 font-bold">Adjusted Thresholds (Select Backgrounds)</th>
+                                <th class="py-3 px-4 font-bold">General Guidance</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#eef2ef] text-mutedSage">
+                            <tr>
+                                <td class="py-3 px-4 font-bold text-darkForest flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-scaleBlue shrink-0"></span>
+                                    Underweight
+                                </td>
+                                <td class="py-3 px-4">Below 18.5</td>
+                                <td class="py-3 px-4">Below 18.5</td>
+                                <td class="py-3 px-4">May indicate insufficient calorie intake or underlying health needs; consider speaking with a GP.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-bold text-darkForest flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-scaleGreen shrink-0"></span>
+                                    Healthy weight
+                                </td>
+                                <td class="py-3 px-4">18.5 to 24.9</td>
+                                <td class="py-3 px-4">18.5 to 22.9</td>
+                                <td class="py-3 px-4">Associated with lower long-term health risks; maintain balanced nutrition and regular movement.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-bold text-darkForest flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-scaleYellow shrink-0"></span>
+                                    Overweight
+                                </td>
+                                <td class="py-3 px-4">25.0 to 29.9</td>
+                                <td class="py-3 px-4">23.0 to 27.4</td>
+                                <td class="py-3 px-4">Gradual, sustainable adjustments to daily activity and portion balance can help lower metabolic risk.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-bold text-darkForest flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-scaleOrange shrink-0"></span>
+                                    Obesity
+                                </td>
+                                <td class="py-3 px-4">30.0 or above</td>
+                                <td class="py-3 px-4">27.5 or above</td>
+                                <td class="py-3 px-4">Higher risk of cardiovascular and metabolic conditions; NHS weight management support is available.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 3: Wellbeing, made practical -->
+            <section id="bmi-notes-2" class="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(28,53,38,0.04)] border border-[#e6ece7] p-6 sm:p-8">
+                <div class="inline-flex items-center gap-2 mb-2">
+                    <span class="w-4 h-[1.5px] bg-[#d4a57c] inline-block rounded-full"></span>
+                    <span class="text-[11px] font-bold tracking-[0.12em] uppercase text-[#4b6b57]">Support for your next step</span>
+                </div>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-darkForest tracking-tight mb-3">
+                    Wellbeing, made practical
+                </h2>
+                <div class="space-y-3 text-sm leading-relaxed text-mutedSage">
+                    <p>
+                        For a more complete picture of your overall health, UK clinicians often look at BMI alongside other practical measurements such as your <strong>waist-to-height ratio</strong> (aiming to keep your waist measurement to less than half your height), blood pressure, cholesterol levels, and daily lifestyle habits.
+                    </p>
+                    <p>
+                        Please note that standard adult BMI ranges are intended for adults aged 18 and over and are not suitable for children, teenagers, or women who are pregnant. If you have questions about your weight or health goals, speak with a GP, community pharmacist, or registered dietitian for tailored advice.
+                    </p>
+                </div>
+
+                <!-- Everyday Wellbeing Pillars -->
+                <div class="mt-7 pt-7 border-t border-[#e6ece7]">
+                    <p class="text-center text-sm text-mutedSage font-normal mb-6">
+                        Small, steady habits can make a difference. Explore three foundational areas to begin.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <!-- Box 1: Everyday nutrition -->
+                        <div class="rounded-[20px] bg-pageBg/60 border border-[#e6ece7] p-6 sm:p-7 flex flex-col justify-between">
+                            <div>
+                                <div class="w-11 h-11 rounded-[13px] bg-[#edf2ee] inline-flex items-center justify-center mb-5" aria-hidden="true">
+                                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                                        <path d="M5 12C5 9.5 7 7.5 9 8C9.8 6.5 11.5 6 13 7C14.5 6 16.5 6.8 17 8.5C18.5 8.8 19.5 10.2 19 12" fill="#4f9e58" stroke="#1c3526" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <circle cx="9.5" cy="9.8" r="1.1" fill="#e06448"/>
+                                        <circle cx="14.5" cy="9.5" r="1.1" fill="#e6b84c"/>
+                                        <path d="M4 12H20C20 16.2 16.8 19 12 19C7.2 19 4 16.2 4 12Z" fill="#ffffff" stroke="#1c3526" stroke-width="1.7" stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-[16px] font-bold text-darkForest mb-2">
+                                    Everyday nutrition
+                                </h3>
+                                <p class="text-[13px] leading-relaxed text-mutedSage">
+                                    Build balanced meals around whole foods, fibre, and lean proteins you enjoy, focusing on steady nourishment rather than restrictive crash diets.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Box 2: Movement that fits -->
+                        <div class="rounded-[20px] bg-pageBg/60 border border-[#e6ece7] p-6 sm:p-7 flex flex-col justify-between">
+                            <div>
+                                <div class="w-11 h-11 rounded-[13px] bg-[#edf2ee] inline-flex items-center justify-center mb-5" aria-hidden="true">
+                                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                                        <circle cx="12" cy="6.2" r="2.1" fill="#f3c18c" stroke="#1c3526" stroke-width="1.6"/>
+                                        <path d="M10.2 10.2C10.2 9.3 11 8.8 12 8.8C13 8.8 13.8 9.4 13.8 10.3L14.2 14.2H9.8L10.2 10.2Z" fill="#e07a3d" stroke="#1c3526" stroke-width="1.6" stroke-linejoin="round"/>
+                                        <path d="M10.5 14.2L8.8 19.2M13.5 14.2L15.4 19.2" stroke="#3b78b5" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M10.2 10.6L8.2 13.2M13.8 10.6L15.8 13" stroke="#1c3526" stroke-width="1.6" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-[16px] font-bold text-darkForest mb-2">
+                                    Movement that fits
+                                </h3>
+                                <p class="text-[13px] leading-relaxed text-mutedSage">
+                                    Aim for regular brisk walking, cycling, or strength activities that fit naturally into your weekly routine and support cardiovascular fitness.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Box 3: Rest & resilience -->
+                        <div class="rounded-[20px] bg-pageBg/60 border border-[#e6ece7] p-6 sm:p-7 flex flex-col justify-between">
+                            <div>
+                                <div class="w-11 h-11 rounded-[13px] bg-[#edf2ee] inline-flex items-center justify-center mb-5" aria-hidden="true">
+                                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                                        <path d="M15.8 14.8C12.3 14.8 9.5 12 9.5 8.5C9.5 7.2 9.9 6 10.6 5C7.4 5.6 5 8.4 5 11.8C5 15.7 8.2 18.8 12.1 18.8C15.5 18.8 18.3 16.4 18.9 13.2C17.9 14.2 16.9 14.8 15.8 14.8Z" fill="#f3cf55" stroke="#1c3526" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-[16px] font-bold text-darkForest mb-2">
+                                    Rest &amp; resilience
+                                </h3>
+                                <p class="text-[13px] leading-relaxed text-mutedSage">
+                                    Consistent sleep and stress management help regulate appetite hormones, boost daytime energy, and make healthy choices easier to sustain.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Frequently Asked Questions (FAQ) -->
+            <section id="faq" class="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(28,53,38,0.04)] border border-[#e6ece7] p-6 sm:p-8 scroll-mt-24">
+                <div class="inline-flex items-center gap-2 mb-2">
+                    <span class="w-4 h-[1.5px] bg-[#d4a57c] inline-block rounded-full"></span>
+                    <span class="text-[11px] font-bold tracking-[0.12em] uppercase text-[#4b6b57]">Common Questions</span>
+                </div>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-darkForest tracking-tight mb-5">
+                    Frequently asked questions about BMI
+                </h2>
+
+                <div class="divide-y divide-[#e6ece7]">
+                    <details class="py-4 group" open>
+                        <summary class="flex items-center justify-between cursor-pointer font-bold text-sm sm:text-[15px] text-darkForest list-none">
+                            <span>Is my height and weight data stored or shared?</span>
+                            <span class="text-btnGreen font-bold text-lg ml-3 group-open:rotate-45 transition-transform">+</span>
+                        </summary>
+                        <p class="mt-2.5 text-sm leading-relaxed text-mutedSage">
+                            No. All BMI calculations on BMIBMI happen directly inside your own web browser. We do not collect, store, or transmit the height or weight numbers you enter into our calculator.
+                        </p>
+                    </details>
+
+                    <details class="py-4 group">
+                        <summary class="flex items-center justify-between cursor-pointer font-bold text-sm sm:text-[15px] text-darkForest list-none">
+                            <span>Why does the NHS recommend measuring waist size alongside BMI?</span>
+                            <span class="text-btnGreen font-bold text-lg ml-3 group-open:rotate-45 transition-transform">+</span>
+                        </summary>
+                        <p class="mt-2.5 text-sm leading-relaxed text-mutedSage">
+                            BMI measures total weight relative to height, whereas waist-to-height ratio checks how much fat is carried around your middle (visceral fat). Carrying excess weight around the abdomen is more closely linked to heart health and type 2 diabetes risk than weight carried on the hips or thighs.
+                        </p>
+                    </details>
+
+                    <details class="py-4 group">
+                        <summary class="flex items-center justify-between cursor-pointer font-bold text-sm sm:text-[15px] text-darkForest list-none">
+                            <span>Can children or teenagers use this BMI calculator?</span>
+                            <span class="text-btnGreen font-bold text-lg ml-3 group-open:rotate-45 transition-transform">+</span>
+                        </summary>
+                        <p class="mt-2.5 text-sm leading-relaxed text-mutedSage">
+                            No. This tool uses adult thresholds intended for people aged 18 and older. Because children and young people are still growing, their BMI is assessed using age- and sex-specific growth centile charts, such as the official NHS Children’s BMI calculator.
+                        </p>
+                    </details>
+
+                    <details class="py-4 group">
+                        <summary class="flex items-center justify-between cursor-pointer font-bold text-sm sm:text-[15px] text-darkForest list-none">
+                            <span>What is the difference between Imperial (stones/pounds) and Metric (kg/cm)?</span>
+                            <span class="text-btnGreen font-bold text-lg ml-3 group-open:rotate-45 transition-transform">+</span>
+                        </summary>
+                        <p class="mt-2.5 text-sm leading-relaxed text-mutedSage">
+                            Both systems produce the exact same BMI score. In the UK, many people measure weight in stones and pounds ($1\text{ stone} = 14\text{ pounds} \approx 6.35\text{ kg}$) and height in feet and inches, while GP surgeries typically record height in centimetres and weight in kilograms. You can use whichever side feels most familiar.
+                        </p>
+                    </details>
+                </div>
+            </section>
+
+            <!-- Section 5: About BMIBMI & Editorial Transparency (Important for AdSense Trust) -->
+            <section id="about-us" class="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(28,53,38,0.04)] border border-[#e6ece7] p-6 sm:p-8 scroll-mt-24">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="inline-flex items-center gap-2 mb-2">
+                            <span class="w-4 h-[1.5px] bg-[#d4a57c] inline-block rounded-full"></span>
+                            <span class="text-[11px] font-bold tracking-[0.12em] uppercase text-[#4b6b57]">About BMIBMI</span>
+                        </div>
+                        <h2 class="text-lg sm:text-xl font-extrabold text-darkForest tracking-tight mb-2">
+                            Simple, privacy-first health tools
+                        </h2>
+                        <p class="text-xs sm:text-sm leading-relaxed text-mutedSage">
+                            BMIBMI (`bmibmi.co.uk`) was created to offer UK visitors a calm, clutter-free, and accurate way to check their Body Mass Index without sign-ups, paywalls, or intrusive tracking. Our reference ranges follow publicly available guidance from the UK National Health Service (NHS) and NICE.
+                        </p>
+                    </div>
+
+                    <div id="privacy-policy">
+                        <div class="inline-flex items-center gap-2 mb-2">
+                            <span class="w-4 h-[1.5px] bg-[#d4a57c] inline-block rounded-full"></span>
+                            <span class="text-[11px] font-bold tracking-[0.12em] uppercase text-[#4b6b57]">Privacy &amp; Cookies</span>
+                        </div>
+                        <h2 class="text-lg sm:text-xl font-extrabold text-darkForest tracking-tight mb-2">
+                            Privacy Policy &amp; Advertising Disclosure
+                        </h2>
+                        <p class="text-xs sm:text-sm leading-relaxed text-mutedSage">
+                            We respect your privacy. Calculator inputs remain strictly on your device and are never saved to a server. To keep this service free, we may display third-party advertisements (such as Google AdSense), which may use cookies or web beacons to serve relevant ads based on your visits to this and other websites. You can manage ad personalisation preferences anytime via <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" class="underline hover:text-darkForest">Google Ads Settings</a>.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Health Information & Legal Disclaimer Footer -->
+            <footer class="rounded-[20px] bg-white/90 border border-[#e6ece7] px-6 py-6 text-center sm:text-left">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pb-4 mb-4 border-b border-[#eef2ef] text-xs font-semibold text-darkForest">
+                    <span>&copy; 2026 BMIBMI (`bmibmi.co.uk`). All rights reserved.</span>
+                    <div class="flex flex-wrap items-center justify-center gap-4 text-mutedSage">
+                        <a href="#calculator" class="hover:text-darkForest">Calculator</a>
+                        <a href="#how-it-works" class="hover:text-darkForest">BMI Guide</a>
+                        <a href="#faq" class="hover:text-darkForest">FAQs</a>
+                        <a href="#about-us" class="hover:text-darkForest">About</a>
+                        <a href="#privacy-policy" class="hover:text-darkForest">Privacy Policy</a>
+                    </div>
+                </div>
+                <p class="text-[11.5px] leading-relaxed text-mutedSage">
+                    <strong class="font-semibold text-darkForest">Medical &amp; legal disclaimer:</strong> This calculator and accompanying content are provided for general educational and informational purposes only and do not constitute medical advice, diagnosis, or treatment. BMI is a general screening tool with known limitations and may not reflect individual health, body composition, or medical needs. Always consult a qualified healthcare professional or GP before making decisions about your health, diet, or exercise routine. Use of this site is at your own discretion, and the creators accept no liability for any actions taken based on the information provided.
+                </p>
+            </footer>
+
+        </div>
+    </div>
+
+    <!-- Calculator Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Input Elements
+            const impStInput = document.getElementById('imp-st');
+            const impLbInput = document.getElementById('imp-lb');
+            const impFtInput = document.getElementById('imp-ft');
+            const impInInput = document.getElementById('imp-in');
+            const metKgInput = document.getElementById('met-kg');
+            const metCmInput = document.getElementById('met-cm');
+
+            // Action Buttons
+            const btnCalcImperial = document.getElementById('btn-calc-imperial');
+            const btnCalcMetric = document.getElementById('btn-calc-metric');
+            const btnClear = document.getElementById('btn-clear');
+
+            // Output Elements
+            const bmiValueEl = document.getElementById('bmi-value');
+            const bmiBadgeEl = document.getElementById('bmi-badge');
+            const bmiDescEl = document.getElementById('bmi-description');
+            const bmiMarkerEl = document.getElementById('bmi-marker');
+            const bmiScaleCaptionEl = document.getElementById('bmi-scale-caption');
+
+            // Validation Banner
+            const validationBanner = document.getElementById('validation-banner');
+            const validationText = document.getElementById('validation-text');
+            const closeValidation = document.getElementById('close-validation');
+
+            function showValidation(msg) {
+                validationText.textContent = msg;
+                validationBanner.classList.remove('hidden');
+            }
+
+            function hideValidation() {
+                validationBanner.classList.add('hidden');
+            }
+
+            closeValidation.addEventListener('click', hideValidation);
+
+            /**
+             * Maps a BMI numeric value onto the 4-segment visual scale bar (0% - 100%)
+             */
+            function calculateMarkerPosition(bmi) {
+                let pct = 0;
+                if (bmi < 18.5) {
+                    const minBmi = 12;
+                    const ratio = Math.max(0, Math.min(1, (bmi - minBmi) / (18.5 - minBmi)));
+                    pct = 4 + ratio * 21;
+                } else if (bmi < 25) {
+                    const ratio = (bmi - 18.5) / (25 - 18.5);
+                    pct = 25 + ratio * 25;
+                } else if (bmi < 30) {
+                    const ratio = (bmi - 25) / (30 - 25);
+                    pct = 50 + ratio * 25;
+                } else {
+                    const maxBmi = 40;
+                    const ratio = Math.max(0, Math.min(1, (bmi - 30) / (maxBmi - 30)));
+                    pct = 75 + ratio * 21;
+                }
+                return Math.min(96, Math.max(4, pct));
+            }
+
+            /**
+             * Updates the UI result card with the computed BMI and NHS range details
+             */
+            function updateResultUI(bmi) {
+                hideValidation();
+                const roundedBmi = bmi.toFixed(1);
+                bmiValueEl.textContent = roundedBmi;
+
+                let category = '';
+                let rangeText = '';
+                let scaleWord = '';
+
+                if (bmi < 18.5) {
+                    category = 'Underweight';
+                    rangeText = 'Your result is in the underweight range for most adults (below 18.5).';
+                    scaleWord = 'underweight';
+                } else if (bmi < 25) {
+                    category = 'Healthy weight';
+                    rangeText = 'Your result is in the healthy weight range for most adults (18.5 to 24.9).';
+                    scaleWord = 'healthy weight';
+                } else if (bmi < 30) {
+                    category = 'Overweight';
+                    rangeText = 'Your result is in the overweight range for most adults (25 to 29.9).';
+                    scaleWord = 'overweight';
+                } else {
+                    category = 'Obesity';
+                    rangeText = 'Your result is in the obesity range for most adults (30 or above).';
+                    scaleWord = 'obesity';
+                }
+
+                bmiBadgeEl.textContent = category;
+                bmiDescEl.textContent = rangeText;
+                bmiScaleCaptionEl.textContent = `Your BMI of ${roundedBmi} sits in the ${scaleWord} range on this scale.`;
+
+                const markerLeft = calculateMarkerPosition(bmi);
+                bmiMarkerEl.style.left = `${markerLeft}%`;
+            }
+
+            /**
+             * Resets the result card to empty state when all fields are cleared
+             */
+            function resetResultUI() {
+                hideValidation();
+                bmiValueEl.textContent = '—';
+                bmiBadgeEl.textContent = 'Enter details';
+                bmiDescEl.textContent = 'Enter your height and weight above to see your BMI result.';
+                bmiScaleCaptionEl.textContent = 'Your BMI position will appear on this scale once calculated.';
+                bmiMarkerEl.style.left = '50%';
+            }
+
+            /**
+             * Calculate BMI from Imperial inputs (st, lb, ft, in)
+             */
+            function calculateImperial() {
+                const st = parseFloat(impStInput.value) || 0;
+                const lb = parseFloat(impLbInput.value) || 0;
+                const ft = parseFloat(impFtInput.value) || 0;
+                const inches = parseFloat(impInInput.value) || 0;
+
+                const totalPounds = (st * 14) + lb;
+                const totalInches = (ft * 12) + inches;
+
+                if (totalPounds <= 0 || totalInches <= 0) {
+                    showValidation('Please enter both a valid weight (st / lb) and height (ft / in) greater than zero.');
+                    return;
+                }
+
+                const bmi = (totalPounds / (totalInches * totalInches)) * 703;
+                updateResultUI(bmi);
+            }
+
+            /**
+             * Calculate BMI from Metric inputs (kg, cm)
+             */
+            function calculateMetric() {
+                const kg = parseFloat(metKgInput.value) || 0;
+                const cm = parseFloat(metCmInput.value) || 0;
+
+                if (kg <= 0 || cm <= 0) {
+                    showValidation('Please enter both a valid weight (kg) and height (cm) greater than zero.');
+                    return;
+                }
+
+                const heightMeters = cm / 100;
+                const bmi = kg / (heightMeters * heightMeters);
+                updateResultUI(bmi);
+            }
+
+            // Button Listeners
+            btnCalcImperial.addEventListener('click', calculateImperial);
+            btnCalcMetric.addEventListener('click', calculateMetric);
+
+            btnClear.addEventListener('click', () => {
+                impStInput.value = '';
+                impLbInput.value = '';
+                impFtInput.value = '';
+                impInInput.value = '';
+                metKgInput.value = '';
+                metCmInput.value = '';
+                resetResultUI();
+            });
+
+            // Support pressing "Enter" inside Imperial or Metric inputs
+            [impStInput, impLbInput, impFtInput, impInInput].forEach(input => {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        calculateImperial();
+                    }
+                });
+            });
+
+            [metKgInput, metCmInput].forEach(input => {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        calculateMetric();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
